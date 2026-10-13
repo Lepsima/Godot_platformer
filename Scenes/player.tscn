@@ -1,0 +1,183 @@
+[gd_scene format=3 uid="uid://pbmoqjvodepq"]
+
+[ext_resource type="Script" uid="uid://cgdk8w7wu6nvv" path="res://Scrips/PlayerMovement.cs" id="1_cvnsp"]
+[ext_resource type="Texture2D" uid="uid://bwwb1ponp1m8y" path="res://Assets/Tilemap.png" id="1_v0iea"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvnsp"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(8, 80, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6t5aa"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(16, 80, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vgqql"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(24, 80, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fkybt"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(32, 80, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3wgy"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(8, 88, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3smsa"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(16, 88, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(8, 64, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1ek2"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(16, 64, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tx1dd"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(24, 64, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gymyn"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(32, 64, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pu2lt"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(8, 72, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ukyrk"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(16, 72, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7dp3o"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(24, 72, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h4iuc"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(32, 72, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f60y1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cvnsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6t5aa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vgqql")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fkybt")
+}],
+"loop": 1,
+"name": &"Attacking",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x3wgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3smsa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x3wgy")
+}],
+"loop": 1,
+"name": &"Damage",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8erm5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1ek2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tx1dd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gymyn")
+}],
+"loop": 1,
+"name": &"Idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pu2lt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ukyrk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7dp3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h4iuc")
+}],
+"loop": 1,
+"name": &"Running",
+"speed": 12.0
+}]
+
+[sub_resource type="Curve" id="Curve_cvnsp"]
+_data = [Vector2(0, 0.5070422), 0.0, 7.066901, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_cvnsp"]
+curve = SubResource("Curve_cvnsp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cvnsp"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, 4, 0)
+direction = Vector3(-0.5, -1, 0)
+spread = 5.0
+initial_velocity_min = 25.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 98, 0)
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_cvnsp")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.0
+collision_use_scale = true
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j6ed8"]
+radius = 3.0
+
+[node name="Player" type="CharacterBody2D" unique_id=1378993632 node_paths=PackedStringArray("sprite", "running_particles", "wall_check")]
+script = ExtResource("1_cvnsp")
+jump_sidewards_velocity = -200.0
+sprite = NodePath("AnimatedSprite2D")
+running_particles = NodePath("GPUParticles2D")
+wall_check = NodePath("RayCast2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=142802432]
+z_index = 1
+sprite_frames = SubResource("SpriteFrames_f60y1")
+animation = &"Idle"
+autoplay = "Idle"
+frame_progress = 0.029098388
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=789932220]
+amount = 12
+lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_cvnsp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=931241467]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_j6ed8")
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1909027796]
+position = Vector2(0, 1)
+target_position = Vector2(4, 0)
+hit_from_inside = true
