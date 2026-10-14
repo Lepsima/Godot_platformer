@@ -21,8 +21,8 @@ public partial class PlayerMovement : CharacterBody2D
 	[Export] float air_speed = 500.0f;
 
 	[Export] float run_drag = 6.0f;
-	[Export] float ground_drag = 6.0f;
-	[Export] float air_drag = 4.0f;
+	[Export] float ground_drag = 12.0f;
+	[Export] float air_drag = 2.0f;
 
 	float current_drag;
 	float current_speed;
@@ -48,11 +48,12 @@ public partial class PlayerMovement : CharacterBody2D
 	[Export] GpuParticles2D running_particles;
 	[Export] RayCast2D wall_check;
 	[Export] PackedScene death_particles;
+	[Export] Node2D spawn_point;
 
 	[ExportCategory("State")]
 	[Export] PlayerState state;
 
-    public override void _Process(double delta)
+	public override void _Process(double delta)
 	{
 		
 	}
@@ -103,7 +104,7 @@ public partial class PlayerMovement : CharacterBody2D
 
 		if(direction.X != 0)
 		{
-			sprite.FlipH = (direction.X < 0);
+			sprite.FlipH = direction.X < 0;
 		}
 
 		//Movement state
@@ -130,10 +131,10 @@ public partial class PlayerMovement : CharacterBody2D
 		Velocity = velocity;
 		MoveAndSlide();
 
-        for (int i = 0; GetSlideCollisionCount() > i; i++)
-        {
-            KinematicCollision2D collision = GetSlideCollision(i);
-            Rid collider_rid = collision.GetColliderRid();
+		for (int i = 0; GetSlideCollisionCount() > i; i++)
+		{
+			KinematicCollision2D collision = GetSlideCollision(i);
+			Rid collider_rid = collision.GetColliderRid();
 
 			uint collision_layer = PhysicsServer2D.BodyGetCollisionLayer(collider_rid);
 			if((collision_layer & (1 << 1)) != 0)
@@ -142,8 +143,13 @@ public partial class PlayerMovement : CharacterBody2D
 				par.GlobalPosition = GlobalPosition;
 				par.Emitting = true;
 				GetTree().CurrentScene.AddChild(par);
+			
+				Velocity = Vector2.Zero;
+				GlobalPosition = spawn_point.GlobalPosition;
+				
+				break;
 			}
-        }
+		}
 
 		if(state != PlayerState.Attacking)
 		{
@@ -193,17 +199,8 @@ public partial class PlayerMovement : CharacterBody2D
 			Velocity *= dash_length / dash_durration;
 
 			await Task.Delay((int)(dash_durration * 1000));
-		
 		}
 
 		is_dashing = false;
 	}
-
-
-
-
-	// GpuParticles2D par = death_particles.Instantiate<GpuParticles2D>();
-	// par.GlobalPosition = GlobalPosition;
-	// par.Emitting = true;
-	// GetTree().CurrentScene.AddChild(par);
 }

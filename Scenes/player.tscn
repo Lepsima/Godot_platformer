@@ -156,6 +156,8 @@ radius = 3.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1378993632 node_paths=PackedStringArray("sprite", "running_particles", "wall_check")]
 script = ExtResource("1_cvnsp")
+ground_drag = 12.0
+air_drag = 2.0
 jump_sidewards_velocity = -200.0
 sprite = NodePath("AnimatedSprite2D")
 running_particles = NodePath("GPUParticles2D")

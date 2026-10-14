@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://vv4peeg680xj"]
 
+[ext_resource type="Script" uid="uid://d4au5dftxji0r" path="res://Scrips/DeathParticles.cs" id="1_nwpij"]
+
 [sub_resource type="Curve" id="Curve_qxrlw"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0457747), -3.8546734, 0.0, 0, 0]
 point_count = 2
@@ -36,3 +38,4 @@ collision_base_size = 0.0
 trail_enabled = true
 trail_lifetime = 0.2
 process_material = SubResource("ParticleProcessMaterial_wrm1d")
+script = ExtResource("1_nwpij")
