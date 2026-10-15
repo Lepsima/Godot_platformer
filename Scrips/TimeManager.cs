@@ -6,30 +6,15 @@ public partial class TimeManager : Node
 	[ExportGroup("References")]
 	[Export] Label Timer_label;
 
-	private float Timer = 0;
+	[ExportGroup("Timer")]
+	[Export] float Time_to_beat = 5;
+
+	private float Timer = 1;
 	private bool Counting = false;
-
-	public void Reset()
-	{
-		Counting = false;
-		Timer = 0;
-	}
-
-	public void Begin()
-	{
-		Counting = true;
-		Timer = 0;
-
-		GetChild(0).QueueFree();
-	}
-
-	public override void _Ready()
-	{
-	}
 
 	public override void _Process(double delta)
 	{
-		if(Input.IsActionJustPressed("restart"))
+		if(Input.IsActionJustPressed("restart") || Timer <= 0)
 		{
 			GetTree().ReloadCurrentScene();
 		}
@@ -38,8 +23,8 @@ public partial class TimeManager : Node
 		{
 			return;
 		}
-		
-		Timer += (float)delta;
+
+		Timer -= (float)delta;
 		Timer_label.Text = Timer.ToString("0.00");
 	}
 
@@ -47,7 +32,8 @@ public partial class TimeManager : Node
 	{
 		if(body is PlayerMovement)
 		{
-			Begin();
+			Counting = true;
+			Timer = Time_to_beat;
 		}
 	}
 
