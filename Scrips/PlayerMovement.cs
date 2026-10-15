@@ -66,8 +66,8 @@ public partial class PlayerMovement : CharacterBody2D
 			return;
 		}
 
-		Vector2 direction = Input.GetVector("left", "right", "up", "down");
-		wall_check.TargetPosition = new Vector2(4 * direction.X, 0);
+		float direction = Input.GetAxis("left", "right");
+		wall_check.TargetPosition = new Vector2(4 * direction, 0);
 		
 		is_climbing = Input.IsActionPressed("climb");
 		is_running = Input.IsActionPressed("run");
@@ -92,7 +92,7 @@ public partial class PlayerMovement : CharacterBody2D
 		
 			if(wall_check.IsColliding() && is_climbing)
 			{
-				velocity.X = jump_sidewards_velocity * direction.X;
+				velocity.X = jump_sidewards_velocity * direction;
 			}
 		}
 
@@ -102,9 +102,9 @@ public partial class PlayerMovement : CharacterBody2D
 			return;
 		}
 
-		if(direction.X != 0)
+		if(direction != 0)
 		{
-			sprite.FlipH = direction.X < 0;
+			sprite.FlipH = direction < 0;
 		}
 
 		//Movement state
@@ -125,7 +125,7 @@ public partial class PlayerMovement : CharacterBody2D
 			current_drag = ground_drag;
 		}
 
-		velocity.X += direction.X * current_speed * (float)delta;
+		velocity.X += direction * current_speed * (float)delta;
 		velocity.X -= velocity.X * current_drag * (float)delta;
 
 		Velocity = velocity;
