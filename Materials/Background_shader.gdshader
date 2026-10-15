@@ -7,7 +7,9 @@ void vertex() {
 }
 
 void fragment() {
-	vec2 grid = fract(world_position / 16.0);
+	vec2 grid = fract(world_position / 24.0);
+	grid.xy += vec2(TIME, -TIME) / 3.0;
+	grid = fract(grid);
 	
 	if((grid.x < 0.5 && grid.y < 0.5) || (grid.x > 0.5 && grid.y > 0.5))
 	{
