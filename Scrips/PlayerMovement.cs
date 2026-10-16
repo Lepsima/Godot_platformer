@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
+using Platformer.Scrips;
+
 public partial class PlayerMovement : CharacterBody2D
 {
 	enum PlayerState
@@ -48,14 +50,15 @@ public partial class PlayerMovement : CharacterBody2D
 	[Export] GpuParticles2D running_particles;
 	[Export] RayCast2D wall_check;
 	[Export] PackedScene death_particles;
-	[Export] Node2D spawn_point;
+	[Export] Label timer_label;
 
 	[ExportCategory("State")]
 	[Export] PlayerState state;
 
 	public override void _Process(double delta)
 	{
-		
+		float time = Level.GetRemainingTime();
+		timer_label.Text = time.ToString("0.00");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -137,24 +140,14 @@ public partial class PlayerMovement : CharacterBody2D
 			Rid collider_rid = collision.GetColliderRid();
 
 			uint collision_layer = PhysicsServer2D.BodyGetCollisionLayer(collider_rid);
-			if((collision_layer & (1 << 1)) != 0)
-			{
-				GpuParticles2D par = death_particles.Instantiate<GpuParticles2D>();
-				par.GlobalPosition = GlobalPosition;
-				par.Emitting = true;
-				GetTree().CurrentScene.AddChild(par);
+			if ((collision_layer & (1 << 1)) == 0) continue;
 			
-				Velocity = Vector2.Zero;
-				GlobalPosition = spawn_point.GlobalPosition;
-				
-				break;
-			}
+			trigger_death();
+			break;
 		}
 
-		if(state != PlayerState.Attacking)
-		{
-			if(Math.Abs(Velocity.X) >= 12)
-			{
+		if(state != PlayerState.Attacking) {
+			if(Math.Abs(Velocity.X) >= 12) {
 				state = PlayerState.Running;
 			}
 			else
@@ -185,6 +178,16 @@ public partial class PlayerMovement : CharacterBody2D
 				break;
 		};
 
+	}
+
+	private void trigger_death() {
+		GpuParticles2D par = death_particles.Instantiate<GpuParticles2D>();
+		par.GlobalPosition = GlobalPosition;
+		par.Emitting = true;
+		GetTree().CurrentScene.AddChild(par);
+			
+		Velocity = Vector2.Zero;
+		GlobalPosition = PlayerSpawnPoint.GetSpawnPosition();
 	}
 
 	private async void Dash()
