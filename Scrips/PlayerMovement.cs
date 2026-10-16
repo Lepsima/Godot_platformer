@@ -55,6 +55,10 @@ public partial class PlayerMovement : CharacterBody2D
 	[ExportCategory("State")]
 	[Export] PlayerState state;
 
+	public override void _Ready() {
+		spawn();
+	}
+
 	public override void _Process(double delta)
 	{
 		float time = Level.GetRemainingTime();
@@ -181,12 +185,15 @@ public partial class PlayerMovement : CharacterBody2D
 	}
 
 	private void trigger_death() {
-		try {
-			GpuParticles2D par = death_particles.Instantiate<GpuParticles2D>();
-			par.GlobalPosition = GlobalPosition;
-			par.Emitting = true;
-			GetTree().CurrentScene.AddChild(par);
+		GpuParticles2D par = death_particles.Instantiate<GpuParticles2D>();
+		par.GlobalPosition = GlobalPosition;
+		par.Emitting = true;
+		GetTree().CurrentScene.AddChild(par);
+		spawn();
+	}
 
+	private void spawn() {
+		try {
 			Velocity = Vector2.Zero;
 			GlobalPosition = PlayerSpawnPoint.GetSpawnPosition();
 		}
