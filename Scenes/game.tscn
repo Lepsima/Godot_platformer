@@ -24,6 +24,7 @@ shadow_color = Color(0, 0.007843138, 0.1254902, 1)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1472408542]
 environment = SubResource("Environment_j6ed8")
 script = ExtResource("1_3dryh")
+default_level = "level_ch0_0"
 
 [node name="Player" parent="." unique_id=1378993632 node_paths=PackedStringArray("timer_label") instance=ExtResource("1_ebmjs")]
 position = Vector2(-20, 10)

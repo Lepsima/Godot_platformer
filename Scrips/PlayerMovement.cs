@@ -55,6 +55,10 @@ public partial class PlayerMovement : CharacterBody2D
 	[ExportCategory("State")]
 	[Export] PlayerState state;
 
+	public override void _Ready() {
+		spawn();
+	}
+
 	public override void _Process(double delta)
 	{
 		float time = Level.GetRemainingTime();
@@ -185,9 +189,17 @@ public partial class PlayerMovement : CharacterBody2D
 		par.GlobalPosition = GlobalPosition;
 		par.Emitting = true;
 		GetTree().CurrentScene.AddChild(par);
-			
-		Velocity = Vector2.Zero;
-		GlobalPosition = PlayerSpawnPoint.GetSpawnPosition();
+		spawn();
+	}
+
+	private void spawn() {
+		try {
+			Velocity = Vector2.Zero;
+			GlobalPosition = PlayerSpawnPoint.GetSpawnPosition();
+		}
+		catch (Exception) {
+			LevelManager.ReloadLevel();
+		}
 	}
 
 	private async void Dash()
