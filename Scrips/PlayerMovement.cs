@@ -181,13 +181,18 @@ public partial class PlayerMovement : CharacterBody2D
 	}
 
 	private void trigger_death() {
-		GpuParticles2D par = death_particles.Instantiate<GpuParticles2D>();
-		par.GlobalPosition = GlobalPosition;
-		par.Emitting = true;
-		GetTree().CurrentScene.AddChild(par);
-			
-		Velocity = Vector2.Zero;
-		GlobalPosition = PlayerSpawnPoint.GetSpawnPosition();
+		try {
+			GpuParticles2D par = death_particles.Instantiate<GpuParticles2D>();
+			par.GlobalPosition = GlobalPosition;
+			par.Emitting = true;
+			GetTree().CurrentScene.AddChild(par);
+
+			Velocity = Vector2.Zero;
+			GlobalPosition = PlayerSpawnPoint.GetSpawnPosition();
+		}
+		catch (Exception) {
+			LevelManager.ReloadLevel();
+		}
 	}
 
 	private async void Dash()
