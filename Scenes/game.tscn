@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b816fitasc80k" path="res://Scrips/LevelManager.cs" id="1_3dryh"]
 [ext_resource type="PackedScene" uid="uid://pbmoqjvodepq" path="res://Scenes/player.tscn" id="1_ebmjs"]
 [ext_resource type="PackedScene" uid="uid://vv4peeg680xj" path="res://Scenes/Death_particles.tscn" id="3_wrm1d"]
-[ext_resource type="FontFile" uid="uid://c673pbv47820q" path="res://Assets/pixel-something-something.ttf" id="9_h4fw4"]
+[ext_resource type="LabelSettings" uid="uid://dkji1aeqw7u6a" path="res://Assets/Countdown_label.tres" id="4_3dryh"]
 
 [sub_resource type="Environment" id="Environment_j6ed8"]
 background_mode = 3
@@ -13,17 +13,100 @@ glow_intensity = 2.0
 glow_bloom = 0.1
 glow_blend_mode = 0
 
-[sub_resource type="LabelSettings" id="LabelSettings_i6g32"]
-font = ExtResource("9_h4fw4")
-font_size = 8
-shadow_size = 0
-shadow_color = Color(0, 0.007843138, 0.1254902, 1)
+[sub_resource type="Animation" id="Animation_i6g32"]
+resource_name = "Close"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(0, 150), Vector2(200, 150)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(200, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_wowpa"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 150)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3dryh"]
+resource_name = "Reveal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(200, 150), Vector2(0, 150)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wowpa"]
+_data = {
+&"Close": SubResource("Animation_i6g32"),
+&"RESET": SubResource("Animation_wowpa"),
+&"Reveal": SubResource("Animation_3dryh")
+}
 
 [node name="Game" type="Node2D" unique_id=1619416894]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1472408542]
 environment = SubResource("Environment_j6ed8")
 script = ExtResource("1_3dryh")
+default_level = "Level_select"
 
 [node name="Player" parent="." unique_id=1378993632 node_paths=PackedStringArray("timer_label") instance=ExtResource("1_ebmjs")]
 position = Vector2(-20, 10)
@@ -38,14 +121,11 @@ death_particles = ExtResource("3_wrm1d")
 timer_label = NodePath("Label")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1941479408]
-limit_left = -96
-limit_top = -168
-limit_right = 440
-limit_bottom = 56
 position_smoothing_enabled = true
 
 [node name="Label" type="Label" parent="Player" unique_id=2389841]
 oversampling_with_scale = 1
+z_index = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -57,7 +137,17 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 text = "0:00"
-label_settings = SubResource("LabelSettings_i6g32")
+label_settings = ExtResource("4_3dryh")
 horizontal_alignment = 1
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1903098224]
+[node name="Transition" type="AnimationPlayer" parent="." unique_id=972993223]
+unique_name_in_owner = true
+root_node = NodePath("CanvasLayer")
+libraries/ = SubResource("AnimationLibrary_wowpa")
+autoplay = &"Reveal"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Transition" unique_id=405344555]
+
+[node name="ColorRect" type="ColorRect" parent="Transition/CanvasLayer" unique_id=480101977]
+offset_bottom = 150.0
+color = Color(0, 0.007843138, 0.10980392, 1)

@@ -1,0 +1,9 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://dkji1aeqw7u6a"]
+
+[ext_resource type="FontFile" uid="uid://c673pbv47820q" path="res://Assets/pixel-something-something.ttf" id="1_ki7pp"]
+
+[resource]
+font = ExtResource("1_ki7pp")
+font_size = 8
+shadow_size = 0
+shadow_color = Color(0, 0.007843138, 0.1254902, 1)

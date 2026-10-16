@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using Godot;
 
 namespace Platformer.Scrips;
@@ -7,6 +9,8 @@ public partial class LevelManager : Node {
 	private static string level_name;
 
 	[Export] private string default_level = "default_level";
+
+	private Camera2D camera;
 	
 	public override void _Ready() {
 		instance = this;
@@ -16,10 +20,27 @@ public partial class LevelManager : Node {
 
 		if (!ResourceLoader.Exists(path)) return;
 		PackedScene level_resource = GD.Load<PackedScene>(path);
-		AddChild(level_resource.Instantiate());
+		
+		Node level_instance = level_resource.Instantiate();
+		AddChild(level_instance);
+
+		camera = GetViewport().GetCamera2D();
+		if(camera != null)
+		{
+			Node2D background = level_instance.GetChild<Node2D>(0);
+		
+			camera.LimitRight = Mathf.RoundToInt(background.GlobalPosition.X + background.Scale.X);
+			camera.LimitBottom = Mathf.RoundToInt(background.GlobalPosition.Y + background.Scale.Y);
+			camera.LimitLeft = Mathf.RoundToInt(background.GlobalPosition.X);
+			camera.LimitTop = Mathf.RoundToInt(background.GlobalPosition.Y);
+		}
 	}
 
-	public static void ReloadLevel() {
+	public static async void ReloadLevel() {
+		AnimationPlayer transition = instance.GetNode<AnimationPlayer>("%Transition");
+		transition.Play("Close");
+		await instance.ToSignal(transition, AnimationPlayer.SignalName.AnimationFinished);
+
 		instance.GetTree().ReloadCurrentScene();
 	}
 
