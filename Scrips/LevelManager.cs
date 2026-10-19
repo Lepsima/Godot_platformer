@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using Godot;
 
 namespace Platformer.Scrips;
@@ -8,6 +10,8 @@ public partial class LevelManager : Node {
 
 	[Export] private string default_level = "default_level";
 	[Export] private string level_folder_path = "res://Scenes/Levels/";
+
+	private Camera2D camera;
 	
 	// Spawn a fresh level prefab when loading the game scene
 	public override void _Ready() {
@@ -22,12 +26,24 @@ public partial class LevelManager : Node {
 		PackedScene level_resource = GD.Load<PackedScene>(path);
 		if (level_resource == null) return;
 		AddChild(level_resource.Instantiate());
+
+    // Set camera limits
+		camera = GetViewport().GetCamera2D();
+		if(camera != null) {
+			Node2D background = level_instance.GetChild<Node2D>(0);
+		
+			camera.LimitRight = Mathf.RoundToInt(background.GlobalPosition.X + background.Scale.X);
+			camera.LimitBottom = Mathf.RoundToInt(background.GlobalPosition.Y + background.Scale.Y);
+			camera.LimitLeft = Mathf.RoundToInt(background.GlobalPosition.X);
+			camera.LimitTop = Mathf.RoundToInt(background.GlobalPosition.Y);
+		}
 	}
-	
-	/// <summary>
-	/// Reloads the game scene with the same level
-	/// </summary>
-	public static void ReloadLevel() {
+
+	public static async void ReloadLevel() {
+		AnimationPlayer transition = instance.GetNode<AnimationPlayer>("%Transition");
+		transition.Play("Close");
+		await instance.ToSignal(transition, AnimationPlayer.SignalName.AnimationFinished);
+
 		instance.GetTree().ReloadCurrentScene();
 	}
 	

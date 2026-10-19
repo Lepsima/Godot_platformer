@@ -7,8 +7,8 @@ public partial class Level : Node2D {
 	private static Level instance;
 	private static float Time => Godot.Time.GetTicksMsec() / 1000.0f;
 	
+	[ExportGroup("Timing")]
 	[Export] private float time_to_beat = 5;
-	
 	private float deadline = -1;
 	private float finish = -1;
 
@@ -17,7 +17,12 @@ public partial class Level : Node2D {
 	/// </summary>
 	public static float GetRemainingTime() => instance?.remaining_time() ?? 0;
 	
-	// Mark this as the active level
+	[ExportGroup("Camera limits")]
+	[Export] public int left_limit = -9999;
+	[Export] public int top_limit = 9999;
+	[Export] public int right_limit = 9999;
+	[Export] public int bottom_limit = -9999;
+
 	public override void _EnterTree() {
 		instance = this;
 	}
