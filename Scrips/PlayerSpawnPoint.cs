@@ -6,6 +6,10 @@ namespace Platformer.Scrips;
 public partial class PlayerSpawnPoint : Node2D {
 	private static PlayerSpawnPoint _instance;
 	
+	/// <summary>
+	/// Gets the spawn position of the current active spawnpoint
+	/// Throws an <see cref="Exception"/> if no spawnpoint is found
+	/// </summary>
 	public static Vector2 GetSpawnPosition() {
 		if (_instance == null) {
 			throw new Exception("No PlayerSpawnPoint found");
