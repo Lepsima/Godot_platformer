@@ -25,30 +25,20 @@ modulate = Color(0, 0.007843138, 0.10980392, 1)
 z_index = -2
 z_as_relative = false
 material = ExtResource("3_dl878")
-position = Vector2(172, -56)
-scale = Vector2(69.00001, 30.000002)
+position = Vector2(-97, -321)
+scale = Vector2(538, 378)
 texture = ExtResource("4_jqqbm")
+offset = Vector2(0.5, 0.5)
 region_enabled = true
-region_rect = Rect2(64, 8, 8, 8)
-
-[node name="Background2" type="Sprite2D" parent="." unique_id=551827132]
-modulate = Color(0, 0.007843138, 0.10980392, 1)
-z_index = -2
-z_as_relative = false
-material = ExtResource("3_dl878")
-position = Vector2(31.99998, -251.5)
-scale = Vector2(34.000008, 19.125004)
-texture = ExtResource("4_jqqbm")
-region_enabled = true
-region_rect = Rect2(64, 8, 8, 8)
+region_rect = Rect2(64, 8, 1, 1)
 
 [node name="Player_spawnpoint" type="Node2D" parent="." unique_id=2116683897]
 position = Vector2(-30, -179)
 script = ExtResource("5_yyej5")
 
 [node name="Start" type="Area2D" parent="." unique_id=54080335]
-position = Vector2(89, -148)
-scale = Vector2(2.75, 0.125)
+position = Vector2(88, -149)
+scale = Vector2(1, 0.125)
 script = ExtResource("6_2iima")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Start" unique_id=1648776440]
@@ -64,6 +54,8 @@ texture = ExtResource("4_jqqbm")
 position = Vector2(232, -112)
 scale = Vector2(0.12, 0.5)
 script = ExtResource("6_2iima")
+load_level_on_trigger = true
+level_path = "Level_select"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="End" unique_id=166625594]
 rotation = -1.5707964

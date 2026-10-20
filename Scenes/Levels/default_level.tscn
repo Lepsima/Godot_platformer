@@ -58,6 +58,8 @@ texture = ExtResource("4_kv2r8")
 position = Vector2(300, -16)
 scale = Vector2(0.12, 0.5)
 script = ExtResource("6_ttkj1")
+load_level_on_trigger = true
+level_path = "Level_select"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="End" unique_id=166625594]
 rotation = -1.5707964

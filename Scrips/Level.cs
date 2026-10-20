@@ -63,5 +63,6 @@ public partial class Level : Node2D {
 	public void finish_level(Node2D body) {
 		if (body is not PlayerMovement) return;
 		finish = Time;
+		LevelManager.Submit_time(deadline - finish);
 	}
 }
