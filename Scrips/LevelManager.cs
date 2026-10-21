@@ -1,11 +1,13 @@
 using System.Text.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Godot;
 
 namespace Platformer.Scrips;
 
 public partial class LevelManager : Node {
 	private static LevelManager instance { get; set; }
+	private static readonly JsonSerializerOptions json_options = new() { WriteIndented = true };
 	private static string level_name;
 	private const string time_save_path = "user://Saves/Times.json";
 
@@ -46,7 +48,13 @@ public partial class LevelManager : Node {
 		//Starts the scene transition, and changes scenes once the animation is over
 		AnimationPlayer transition = instance.GetNode<AnimationPlayer>("%Transition");
 		transition.Play("Close");
-		await instance.ToSignal(transition, AnimationPlayer.SignalName.AnimationFinished);
+
+		try {
+			await instance.ToSignal(transition, AnimationMixer.SignalName.AnimationFinished);
+		}
+		catch {
+			GD.PrintErr("Error playing level reload animation");
+		}
 
 		instance.GetTree().ReloadCurrentScene();
 	}
@@ -70,7 +78,6 @@ public partial class LevelManager : Node {
 		}
 
 		//Writes the data back to the json file
-		var json_options = new JsonSerializerOptions { WriteIndented = true };
 		string updated_times = JsonSerializer.Serialize(saved_times, json_options);
 		FileAccess file = FileAccess.Open(time_save_path, FileAccess.ModeFlags.Write);
 		
@@ -84,7 +91,7 @@ public partial class LevelManager : Node {
 
 	public static float Get_time_from_level(string level) {
 		Dictionary<string, float> saved_times = LoadSavedTimes();
-		return saved_times.TryGetValue(level, out float time) ? time : 0.0f;
+		return saved_times.GetValueOrDefault(level, 0.0f);
 	}
 
 	//Loads the saved times as a dictionary

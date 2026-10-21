@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://comhm1frc8lw0"]
+
+[ext_resource type="Script" uid="uid://d4au5dftxji0r" path="res://Scrips/DeathParticles.cs" id="1_n5yco"]
+
+[sub_resource type="Curve" id="Curve_qxrlw"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.0457747), -3.8546734, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_j6ed8"]
+curve = SubResource("Curve_qxrlw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wrm1d"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+particle_flag_disable_z = true
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+direction = Vector3(0, -50, 0)
+spread = 60.0
+flatness = 1.0
+initial_velocity_max = 40.879997
+gravity = Vector3(0, 98, 0)
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_j6ed8")
+color = Color(0.8509804, 0.12941177, 0.30980393, 1)
+collision_mode = 2
+collision_use_scale = true
+
+[node name="Death_anim" type="GPUParticles2D" unique_id=1949747830]
+emitting = false
+amount = 64
+lifetime = 2.0
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+collision_base_size = 0.0
+trail_enabled = true
+trail_lifetime = 0.2
+process_material = SubResource("ParticleProcessMaterial_wrm1d")
+script = ExtResource("1_n5yco")

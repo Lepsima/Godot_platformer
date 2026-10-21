@@ -9,6 +9,7 @@
 [ext_resource type="Shader" uid="uid://b5qm2lnwx1xn" path="res://Materials/Line.gdshader" id="7_kia2u"]
 [ext_resource type="Script" uid="uid://bvyvk8gjv68ax" path="res://Scenes/Levels/TimeLabel.cs" id="7_tini3"]
 [ext_resource type="LabelSettings" uid="uid://rynn6ayjgwal" path="res://Assets/World_text_label.tres" id="8_kia2u"]
+[ext_resource type="PackedScene" uid="uid://comhm1frc8lw0" path="res://Scenes/portal_particles.tscn" id="10_s6w6q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kia2u"]
 size = Vector2(1, 1)
@@ -164,6 +165,12 @@ material = SubResource("ShaderMaterial_kia2u")
 texture = ExtResource("4_s6w6q")
 region_enabled = true
 region_rect = Rect2(0, 0, 1, 1)
+
+[node name="Death_anim" parent="." unique_id=1949747830 instance=ExtResource("10_s6w6q")]
+position = Vector2(44, 44)
+emitting = true
+lifetime = 2.6999999999999997
+one_shot = false
 
 [connection signal="body_entered" from="Exit_trigger" to="Exit_trigger" method="_on_body_entered"]
 [connection signal="body_entered" from="Level_1_trigger" to="Level_1_trigger" method="_on_body_entered"]
